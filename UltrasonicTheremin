@@ -1,5 +1,5 @@
 //Arduino code for a Theremin using a Ultrasonic Sensor and Speaker
-#define BUZZER_PIN   8
+#define BUZZER_PIN   8 // for speaker/buzzer
 #define TRIGGER_PIN  9 // for ultrasonic
 #define ECHO_PIN     10 // for ultrasonic
 
@@ -8,6 +8,7 @@ int maxDistance = 50;
 int duration; // defining varaibles for later
 int distance; // defining varaibles for later
 
+//defining pins and setting up
 void setup() {
   pinMode(BUZZER_PIN, OUTPUT);
   pinMode(TRIGGER_PIN, OUTPUT);
@@ -23,17 +24,16 @@ void loop() {
   digitalWrite(TRIGGER_PIN, LOW);
 
   duration = pulseIn(ECHO_PIN, HIGH);
-  distance = (duration*.0343)/2;
-  Serial.println(distance);
+  distance = (duration*.0343)/2; // converting the ultrasonic values to a distance in cm
+  Serial.println(distance); // used to check what values are read
   delay(100);
-  //int distance = sonar.ping_cm();
   
-  int frequency = map(distance, minDistance, maxDistance, 100, 2000);
+  int frequency = map(distance, minDistance, maxDistance, 100, 2000); // maping frequencies to different distances that the ultrasonic reads
   if (distance >= minDistance && distance <= maxDistance) {
     // Use Timer 1 for tone generation
-    tone(BUZZER_PIN, frequency, 50); // The last parameter is the duration in milliseconds
+    tone(BUZZER_PIN, frequency, 50); // last parameter is sound duration
   } else {
-    noTone(BUZZER_PIN);
+    noTone(BUZZER_PIN); // no sound if hand is too close/far
   }
   
   delay(5);
